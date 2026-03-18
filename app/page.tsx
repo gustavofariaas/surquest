@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import RecommendForm from './components/RecommendForm'
 
 export default function Home() {
@@ -10,6 +11,24 @@ export default function Home() {
         </div>
 
         <RecommendForm />
+
+        <div className="mt-12 pt-8 border-t border-slate-200 text-center space-y-2">
+          <p className="text-xs text-slate-400">Explore os spots</p>
+          <div className="flex flex-wrap justify-center gap-3 text-sm">
+            <Link href="/spots" className="text-slate-500 hover:text-emerald-600 transition-colors">
+              Todos os spots
+            </Link>
+            <Link href="/onde-surfar/florianopolis" className="text-slate-500 hover:text-emerald-600 transition-colors">
+              Surf em Florianópolis
+            </Link>
+            <Link href="/onde-surfar/ubatuba" className="text-slate-500 hover:text-emerald-600 transition-colors">
+              Surf em Ubatuba
+            </Link>
+            <Link href="/onde-surfar/saquarema" className="text-slate-500 hover:text-emerald-600 transition-colors">
+              Surf em Saquarema
+            </Link>
+          </div>
+        </div>
       </div>
     </main>
   )
