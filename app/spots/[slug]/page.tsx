@@ -30,6 +30,13 @@ const nivelLabel: Record<string, string> = {
   todos: 'Todos os níveis',
 }
 
+const nivelColor: Record<string, string> = {
+  iniciante: 'bg-green-50 text-green-700',
+  intermediario: 'bg-blue-50 text-blue-700',
+  avancado: 'bg-orange-50 text-orange-700',
+  todos: 'bg-slate-100 text-slate-600',
+}
+
 export default async function SpotPage({ params }: Props) {
   const { slug } = await params
   const spot = await getSpotPorSlug(slug)
@@ -37,85 +44,95 @@ export default async function SpotPage({ params }: Props) {
   if (!spot) notFound()
 
   return (
-    <main className="min-h-screen px-4 py-12">
-      <div className="max-w-xl mx-auto">
-        <Link href="/spots" className="text-sm text-slate-400 hover:text-slate-600 mb-6 inline-block">
-          ← Todos os spots
-        </Link>
-
-        <div className="mb-8">
-          <p className="text-sm text-slate-400 mb-1">{spot.cidade} · {spot.estado}</p>
-          <h1 className="text-3xl font-bold text-slate-900">{spot.nome}</h1>
+    <>
+      <section className="bg-slate-900 text-white px-4 py-12">
+        <div className="max-w-xl mx-auto">
+          <Link href="/spots" className="text-xs text-slate-500 hover:text-slate-300 transition-colors mb-4 inline-block">
+            ← Todos os spots
+          </Link>
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-sm text-slate-400 mb-1">{spot.cidade} · {spot.estado}</p>
+              <h1 className="text-3xl md:text-4xl font-bold">{spot.nome}</h1>
+            </div>
+            <span className={`shrink-0 text-xs font-semibold px-3 py-1.5 rounded-full mt-1 ${nivelColor[spot.nivel]}`}>
+              {nivelLabel[spot.nivel]}
+            </span>
+          </div>
           {spot.descricao && (
-            <p className="mt-3 text-slate-600 leading-relaxed">{spot.descricao}</p>
+            <p className="mt-4 text-slate-400 leading-relaxed">{spot.descricao}</p>
           )}
         </div>
+      </section>
 
-        {/* Info do spot */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 mb-6">
-          <h2 className="font-semibold text-slate-800">Informações do spot</h2>
+      <section className="px-4 py-10">
+        <div className="max-w-xl mx-auto space-y-4">
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="bg-slate-50 rounded-xl p-3">
-              <p className="text-xs text-slate-400 mb-1">Nível recomendado</p>
-              <p className="text-sm font-medium text-slate-800">{nivelLabel[spot.nivel]}</p>
-            </div>
-            <div className="bg-slate-50 rounded-xl p-3">
-              <p className="text-xs text-slate-400 mb-1">Tipo de onda</p>
-              <p className="text-sm font-medium text-slate-800">
-                {spot.tipo_onda.replace('_', ' ')}
-              </p>
+          <div className="bg-white border border-slate-200 rounded-2xl p-5">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">
+              Informações
+            </h2>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="bg-slate-50 rounded-xl p-4">
+                <p className="text-xs text-slate-400 mb-1">Tipo de onda</p>
+                <p className="font-semibold text-slate-800 capitalize">
+                  {spot.tipo_onda.replace('_', ' ')}
+                </p>
+              </div>
+              <div className="bg-slate-50 rounded-xl p-4">
+                <p className="text-xs text-slate-400 mb-1">Nível</p>
+                <p className="font-semibold text-slate-800">{nivelLabel[spot.nivel]}</p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Condições ideais */}
-        <div className="bg-white border border-slate-200 rounded-2xl p-5 space-y-4 mb-6">
-          <h2 className="font-semibold text-slate-800">Condições ideais</h2>
-
-          <div className="space-y-3 text-sm">
-            <div className="flex justify-between">
-              <span className="text-slate-500">Swell</span>
-              <span className="text-slate-800 font-medium">
-                {spot.regras.swell_altura_min}–{spot.regras.swell_altura_max}m
-                · direção {spot.regras.swell_direcao_ideal.join(', ')}
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Período</span>
-              <span className="text-slate-800 font-medium">
-                acima de {spot.regras.swell_periodo_min}s
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Vento</span>
-              <span className="text-slate-800 font-medium">
-                {spot.regras.vento_direcao_ideal.join(', ')}
-                · até {spot.regras.vento_velocidade_max} km/h
-              </span>
-            </div>
-            <div className="flex justify-between">
-              <span className="text-slate-500">Maré</span>
-              <span className="text-slate-800 font-medium capitalize">
-                {spot.regras.mare_ideal}
-              </span>
+          <div className="bg-white border border-slate-200 rounded-2xl p-5">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">
+              Condições ideais
+            </h2>
+            <div className="space-y-3">
+              {[
+                {
+                  label: 'Swell',
+                  value: `${spot.regras.swell_altura_min}–${spot.regras.swell_altura_max}m · ${spot.regras.swell_direcao_ideal.join(', ')}`,
+                },
+                {
+                  label: 'Período',
+                  value: `acima de ${spot.regras.swell_periodo_min}s`,
+                },
+                {
+                  label: 'Vento',
+                  value: `${spot.regras.vento_direcao_ideal.join(', ')} · até ${spot.regras.vento_velocidade_max} km/h`,
+                },
+                {
+                  label: 'Maré',
+                  value: spot.regras.mare_ideal,
+                },
+              ].map(({ label, value }) => (
+                <div key={label} className="flex justify-between items-center py-2 border-b border-slate-100 last:border-0">
+                  <span className="text-sm text-slate-500">{label}</span>
+                  <span className="text-sm font-medium text-slate-800 capitalize">{value}</span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
 
-        {/* CTA */}
-        <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center">
-          <p className="text-slate-700 font-medium mb-3">
-            Quer saber se a {spot.nome} está boa agora?
-          </p>
-          <Link
-            href={`/?spot=${spot.slug}`}
-            className="inline-block bg-emerald-600 text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-emerald-700 transition-colors"
-          >
-            Ver condições em tempo real
-          </Link>
+          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 text-center">
+            <p className="text-slate-700 font-semibold mb-1">
+              A {spot.nome} está boa agora?
+            </p>
+            <p className="text-slate-500 text-sm mb-4">
+              Veja o score em tempo real com base em swell, vento e maré.
+            </p>
+            <Link
+              href="/"
+              className="inline-block bg-emerald-600 text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-emerald-700 transition-colors"
+            >
+              Ver condições agora →
+            </Link>
+          </div>
         </div>
-      </div>
-    </main>
+      </section>
+    </>
   )
 }

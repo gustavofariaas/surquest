@@ -80,29 +80,34 @@ export default function RecommendForm() {
   }
 
   return (
-    <div className="w-full max-w-xl mx-auto space-y-6">
-      {/* Configurações */}
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-5">
+    <div className="w-full space-y-4">
+      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 space-y-5">
 
         {/* Localização */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Localização</label>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            Localização
+          </label>
           <div className="flex gap-2 mb-3">
             <button
               onClick={() => setModo('gps')}
               className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-                modo === 'gps' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                modo === 'gps'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
-              Usar minha localização
+              📍 Minha localização
             </button>
             <button
               onClick={() => setModo('busca')}
               className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
-                modo === 'busca' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                modo === 'busca'
+                  ? 'bg-slate-900 text-white'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >
-              Buscar por cidade
+              🔍 Buscar cidade
             </button>
           </div>
 
@@ -113,19 +118,22 @@ export default function RecommendForm() {
               onChange={(e) => setBusca(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && buscarRecomendacao()}
               placeholder="Ex: Florianópolis, Ubatuba, Saquarema..."
-              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-slate-50"
             />
           )}
         </div>
 
+        {/* Nível */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">Seu nível</label>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            Seu nível
+          </label>
           <div className="flex gap-2">
             {(['iniciante', 'intermediario', 'avancado'] as NivelSurfista[]).map((n) => (
               <button
                 key={n}
                 onClick={() => setNivel(n)}
-                className={`flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-colors ${
+                className={`flex-1 py-2 rounded-xl text-sm font-medium transition-colors ${
                   nivel === n
                     ? 'bg-slate-900 text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
@@ -137,9 +145,10 @@ export default function RecommendForm() {
           </div>
         </div>
 
+        {/* Raio */}
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
-            Raio de busca: <span className="text-slate-900 font-semibold">{raio} km</span>
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
+            Raio: <span className="text-slate-700 normal-case">{raio} km</span>
           </label>
           <div className="flex gap-2">
             {RAIOS.map((r) => (
@@ -161,25 +170,30 @@ export default function RecommendForm() {
         <button
           onClick={buscarRecomendacao}
           disabled={loading}
-          className="w-full py-3 rounded-xl bg-emerald-600 text-white font-semibold hover:bg-emerald-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+          className="w-full py-3.5 rounded-xl bg-emerald-600 text-white font-semibold text-base hover:bg-emerald-700 active:scale-[0.99] transition-all disabled:opacity-60 disabled:cursor-not-allowed shadow-sm"
         >
-          {loading ? 'Buscando condições...' : 'Descobrir onde surfar'}
+          {loading ? (
+            <span className="flex items-center justify-center gap-2">
+              <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              Buscando condições...
+            </span>
+          ) : (
+            'Descobrir onde surfar 🏄'
+          )}
         </button>
       </div>
 
-      {/* Erro */}
       {erro && (
         <div className="bg-red-50 border border-red-200 rounded-2xl p-4 text-sm text-red-700">
           {erro}
         </div>
       )}
 
-      {/* Resultados */}
       {resultado && (
         <div className="space-y-3">
           <p className="text-xs text-slate-400 text-center">
-            {resultado.ranking.length} spots encontrados num raio de {raio} km
-            {localLabel && <> · <span className="text-slate-500">{localLabel}</span></>}
+            {resultado.ranking.length} spots · raio de {raio} km
+            {localLabel && <> · <span className="text-slate-500">{localLabel.split(',')[0]}</span></>}
           </p>
 
           {resultado.ranking.map((r, i) => (

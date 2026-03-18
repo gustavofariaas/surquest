@@ -3,33 +3,62 @@ import RecommendForm from './components/RecommendForm'
 
 export default function Home() {
   return (
-    <main className="min-h-screen px-4 py-12">
-      <div className="max-w-xl mx-auto">
-        <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">SurQuest</h1>
-          <p className="mt-2 text-slate-500 text-lg">Onde vale a pena surfar agora, perto de você?</p>
+    <>
+      {/* Hero */}
+      <section className="bg-slate-900 text-white px-4 py-16 md:py-24">
+        <div className="max-w-xl mx-auto text-center">
+          <span className="inline-block text-xs font-semibold uppercase tracking-widest text-emerald-400 mb-4">
+            Previsão inteligente de surf
+          </span>
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight tracking-tight">
+            Onde vale a pena<br />surfar agora?
+          </h1>
+          <p className="mt-4 text-slate-400 text-lg">
+            Informe sua localização e descubra o melhor spot perto de você, com score e explicação das condições.
+          </p>
         </div>
+      </section>
 
-        <RecommendForm />
+      {/* Form */}
+      <section className="px-4 pb-16">
+        <div className="max-w-xl mx-auto -mt-6">
+          <RecommendForm />
+        </div>
+      </section>
 
-        <div className="mt-12 pt-8 border-t border-slate-200 text-center space-y-2">
-          <p className="text-xs text-slate-400">Explore os spots</p>
-          <div className="flex flex-wrap justify-center gap-3 text-sm">
-            <Link href="/spots" className="text-slate-500 hover:text-emerald-600 transition-colors">
-              Todos os spots
-            </Link>
-            <Link href="/onde-surfar/florianopolis" className="text-slate-500 hover:text-emerald-600 transition-colors">
-              Surf em Florianópolis
-            </Link>
-            <Link href="/onde-surfar/ubatuba" className="text-slate-500 hover:text-emerald-600 transition-colors">
-              Surf em Ubatuba
-            </Link>
-            <Link href="/onde-surfar/saquarema" className="text-slate-500 hover:text-emerald-600 transition-colors">
-              Surf em Saquarema
+      {/* Links SEO */}
+      <section className="px-4 pb-16">
+        <div className="max-w-xl mx-auto">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-4">
+            Explore por cidade
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {[
+              { label: 'Florianópolis', slug: 'florianopolis' },
+              { label: 'Ubatuba', slug: 'ubatuba' },
+              { label: 'Saquarema', slug: 'saquarema' },
+              { label: 'Rio de Janeiro', slug: 'rio-de-janeiro' },
+              { label: 'Torres', slug: 'torres' },
+              { label: 'Garopaba', slug: 'garopaba' },
+              { label: 'Praia Grande', slug: 'praia-grande' },
+            ].map((c) => (
+              <Link
+                key={c.slug}
+                href={`/onde-surfar/${c.slug}`}
+                className="text-sm bg-white border border-slate-200 text-slate-600 hover:border-emerald-400 hover:text-emerald-700 px-3 py-1.5 rounded-full transition-colors"
+              >
+                {c.label}
+              </Link>
+            ))}
+            <Link
+              href="/spots"
+              className="text-sm bg-white border border-slate-200 text-slate-500 hover:border-slate-400 px-3 py-1.5 rounded-full transition-colors"
+            >
+              Ver todos →
             </Link>
           </div>
         </div>
-      </div>
-    </main>
+      </section>
+    </>
   )
 }
