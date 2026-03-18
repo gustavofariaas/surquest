@@ -9,6 +9,10 @@ const geist = Geist({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'SurQuest — Onde surfar agora?',
   description: 'Descubra qual é o melhor spot para surfar perto de você neste momento.',
+  icons: {
+    icon: '/icon.png',
+    apple: '/icon.png',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

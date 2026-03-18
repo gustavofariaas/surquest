@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Header() {
@@ -5,7 +6,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-slate-200">
       <div className="max-w-4xl mx-auto px-4 h-14 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
-          <span className="text-xl">🌊</span>
+          <Image src="/icon.png" alt="SurQuest" width={28} height={28} className="rounded-md" />
           <span className="font-bold text-slate-900 text-lg tracking-tight">SurQuest</span>
         </Link>
 
